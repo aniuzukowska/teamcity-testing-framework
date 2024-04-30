@@ -1,0 +1,130 @@
+
+### 0. Generate auth token
+GET http://192.168.1.6:8111/authenticationTest.html?csrf
+Accept: application/json
+Authorization: Basic admin admin
+
+### 1. Create project
+POST http://192.168.1.6:8111/app/rest/projects
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 66e74dd2-723f-4bca-89f2-727de48700d5
+
+{
+  "parentProject": {
+    "locator": "_Root"
+  },
+  "name": "name",
+  "id": "id",
+  "copyAllAssociatedSettings": true
+}
+
+### 2. Create build configuration
+POST http://192.168.1.6:8111/app/rest/buildTypes
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 16bde149-47c0-42ed-99a8-8d9b30b8b889
+
+{
+  "id": "id",
+  "name": "Print hello world",
+  "project": {
+    "id": "id"
+  },
+  "steps": {
+    "step": [
+      {
+        "name": "Print hello world",
+        "type": "simpleRunner",
+        "properties": {
+          "property": [
+            {
+              "name": "script.content",
+              "value": "echo 'Hello World!'"
+            },
+            {
+              "name": "teamcity.step.mode",
+              "value": "default"
+            },
+            {
+              "name": "use.custom.script",
+              "value": "true"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+### 3. Run build
+
+POST http://192.168.1.6:8111/app/rest/buildQueue
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 16bde149-47c0-42ed-99a8-8d9b30b8b889
+
+{
+  "buildType": {
+    "id": "id"
+  }
+}
+
+### 4. Check build status
+
+GET http://192.168.1.6:8111/app/rest/builds/id:1
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 2f55c4bf-0e64-44c7-964e-81835162f576
+
+
+###
+
+PUT http://192.168.1.6:8111/app/rest/server/authSettings
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 2119d857-90fe-4e7c-b1ac-d9b1b8263d7c
+
+{
+  "perProjectPermissions": true,
+  "modules": {
+    "module": [
+      {
+        "name": "HTTP-Basic"
+      },
+      {
+        "name": "Default",
+        "properties": {
+          "property": [
+            {
+              "name": "usersCanResetOwnPasswords",
+              "value": true
+            },
+            {
+              "name": "usersCanChangeOwnPasswords",
+              "value": true
+            },
+            {
+              "name": "usersCanChangeOwnPasswords",
+              "value": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "Token-Auth"
+      },
+      {
+        "name": "LDAP",
+        "properties": {
+          "property": [
+            {
+              "name": "allowCreatingNewUsersByLogin",
+              "value": true
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+GET http://192.168.1.6:8111/app/ rest/buildTypes/id:id
+Accept: application/json
+X-TC-CSRF-Token: 341521a4-8c18-4a7e-b0f4-e3e9ad3ba6b0
+###
