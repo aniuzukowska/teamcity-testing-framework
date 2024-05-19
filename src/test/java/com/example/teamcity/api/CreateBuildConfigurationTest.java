@@ -31,8 +31,9 @@ public class CreateBuildConfigurationTest extends BaseApiTest {
                 .create(secondTestData.getBuildType())
                 .then()
                 .assertThat().statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(Matchers.containsString("The build configuration / template ID \""
-                        + secondTestData.getBuildType().getId() + "\" is already used by another configuration or template"));
+                .body(Matchers.containsString(
+                        String.format("The build configuration / template ID \"%s\" is already used by another configuration or template",
+                        secondTestData.getBuildType().getId())));
 
     }
 
@@ -43,8 +44,10 @@ public class CreateBuildConfigurationTest extends BaseApiTest {
         uncheckedWithSuperUser.getBuildConfigRequest().create(testData.getBuildType())
                 .then()
                 .assertThat().statusCode(HttpStatus.SC_NOT_FOUND)
-                .body(Matchers.containsString("No project found by locator 'count:1,id:" + testData.getProject().getId() +
-                        "'. Project cannot be found by external id '" + testData.getProject().getId() +"'."));
+                .body(Matchers.containsString(
+                        String.format("No project found by locator 'count:1,id: %s'. Project cannot be found by external id '%d'.",
+                                testData.getProject().getId(),
+                                testData.getProject().getId())));
     }
 
     @Test
