@@ -4,15 +4,12 @@ import com.example.teamcity.api.generators.TestDataStorage;
 import com.example.teamcity.api.requests.CheckedRequests;
 import com.example.teamcity.api.requests.UncheckedRequests;
 import com.example.teamcity.api.spec.Specifications;
-import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
 
@@ -24,7 +21,49 @@ public class BaseTest {
 
     @BeforeSuite
     public static void setAuthSettings() throws IOException {
-        String body = FileUtils.readFileToString(new File("resources/forAuthSettings.json"), StandardCharsets.UTF_8);
+        String body = """
+                {"perProjectPermissions": true,
+                  "modules": {
+                    "module": [
+                      {
+                        "name": "HTTP-Basic"
+                      },
+                      {
+                        "name": "Default",
+                        "properties": {
+                          "property": [
+                            {
+                              "name": "usersCanResetOwnPasswords",
+                              "value": true
+                            },
+                            {
+                              "name": "usersCanChangeOwnPasswords",
+                              "value": true
+                            },
+                            {
+                              "name": "usersCanChangeOwnPasswords",
+                              "value": false
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "Token-Auth"
+                      },
+                      {
+                        "name": "LDAP",
+                        "properties": {
+                          "property": [
+                            {
+                              "name": "allowCreatingNewUsersByLogin",
+                              "value": true
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }""";
 
         given()
                 .spec(Specifications.getSpec().superUserSpec())
@@ -35,7 +74,7 @@ public class BaseTest {
     @BeforeMethod
     public void beforeTest() {
         softy = new SoftAssertions();
-        testDataStorage = TestDataStorage.getStorage()
+        testDataStorage = TestDataStorage.getStorage();
     }
 
     @AfterMethod

@@ -1,27 +1,26 @@
 package com.example.teamcity.ui;
 
-import com.codeborne.selenide.selector.ByAttribute;
-import com.example.teamcity.api.requests.checked.CheckedUser;
-import com.example.teamcity.api.spec.Specifications;
+import com.codeborne.selenide.Condition;
+import com.example.teamcity.ui.favorites.ProjectsPage;
+import com.example.teamcity.ui.pages.admin.CreateNewProject;
 import org.testng.annotations.Test;
-import com.codeborne.selenide.Selenide;
-import static com.codeborne.selenide.Selenide.element;
 
-public class CreateNewProjectTest extends BaseUiTest {
-
+public class CreateNewProjectTest extends BaseUiTest{
     @Test
     public void authorizedUserShouldBeAbleCreateNewProject() {
         var testData = testDataStorage.addTestData();
-        new CheckedUser(Specifications.getSpec().superUserSpec()).create(testData.getUser());
+        var url = "https://github.com/AlexPshe/spring-core-for-qa";
 
-        Selenide.open("/login.html");
+        loginAsUser(testData.getUser());
 
-        var usernameInput = element(new ByAttribute("id", "username"));
-        var passwordInput = element(new ByAttribute("id", "password"));
-        var logInButton = element(new ByAttribute("type", "submit"));
+        new CreateNewProject()
+                .open(testData.getProject().getParentProject().getLocator())
+                .createProjectByUrl(url)
+                .setupProject(testData.getProject().getName(), testData.getBuildType().getName());
 
-        usernameInput.sendKeys(testData.getUser().getUsername());
-        passwordInput.sendKeys(testData.getUser().getPassword());
-        logInButton.click();
+        new ProjectsPage().open()
+                .getSubprojects()
+                .stream().reduce((first, second) -> second).get()
+                .getHeader().shouldHave(Condition.text(testData.getProject().getName()));
     }
 }
