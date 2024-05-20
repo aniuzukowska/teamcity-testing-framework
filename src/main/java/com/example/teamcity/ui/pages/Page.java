@@ -3,6 +3,7 @@ package com.example.teamcity.ui.pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.selector.ByAttribute;
 import com.example.teamcity.ui.Selectors;
 import com.example.teamcity.ui.elements.PageElement;
 
@@ -17,6 +18,7 @@ public abstract class Page {
     private SelenideElement submitButton = element(Selectors.byType("submit"));
     private SelenideElement savingWaitingMarker = element(Selectors.byId("saving"));
     private SelenideElement pageWaitingMarker = element(Selectors.byDataTest("ring-loader"));
+    protected SelenideElement manuallyButton = element(new ByAttribute("href", "#createManually"));
 
     public void submit() {
         submitButton.click();
