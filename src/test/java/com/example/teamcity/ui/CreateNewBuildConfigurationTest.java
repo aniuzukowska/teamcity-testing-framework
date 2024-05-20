@@ -26,12 +26,12 @@ public class CreateNewBuildConfigurationTest extends BaseUiTest {
                 .getSubBuilds()
                 .stream().reduce((first, second) -> second).get()
                 .getHeader().shouldHave(Condition.text(testData.getBuildType().getName()));
+
     }
 
     @Test
     public void authorizedUserShouldBeAbleCreateNewBuildConfigurationManually() {
         var testData = testDataStorage.addTestData();
-        var url = "https://github.com/AlexPshe/spring-core-for-qa";
 
         checkedWithSuperUser.getProjectRequest().create(testData.getProject());
 
@@ -46,5 +46,7 @@ public class CreateNewBuildConfigurationTest extends BaseUiTest {
                 .getSubBuilds()
                 .stream().reduce((first, second) -> second).get()
                 .getHeader().shouldHave(Condition.text(testData.getBuildType().getName()));
+
+        checkedWithSuperUser.getBuildConfigRequest().get(testData.getBuildType().getId());
     }
 }

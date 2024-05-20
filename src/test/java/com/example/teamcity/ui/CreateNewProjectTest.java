@@ -39,5 +39,7 @@ public class CreateNewProjectTest extends BaseUiTest{
                 .getSubprojects()
                 .stream().reduce((first, second) -> second).get()
                 .getHeader().shouldHave(Condition.text(testData.getProject().getName()));
+
+        checkedWithSuperUser.getProjectRequest().get(testData.getProject().getId());
     }
 }
