@@ -8,9 +8,6 @@ import org.testng.annotations.Test;
 public class SetupTest extends BaseUiTest {
     @Test
     public void startUpTest() {
-        var testData = testDataStorage.addTestData();
-
-        loginAsUser(testData.getUser());
         new StartUpPage()
                 .open()
                 .setupTeamCityServer()
@@ -19,6 +16,9 @@ public class SetupTest extends BaseUiTest {
 
     @Test
     public void setupTeamCityAgentTest() {
+        var testData = testDataStorage.addTestData();
+        loginAsUser(testData.getUser());
+
         new AgentPage()
                 .open()
                 .setupTeamCityAgent();
