@@ -65,9 +65,19 @@ jobs:
 
       - name: Set up superUserToken environment variable
         # Берем из лога контейнера строку с последним упоминанием токена, из нее 6-е слово, что соответствует токену
-        run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
+        run: |
+          echo "Checking TeamCity logs for Super User Token..."
+          token=$(docker logs teamcity-server 2>&1 | grep -o 'Super user authentication token: [0-9]*' | grep -o '[0-9]*')
+          echo "Extracted Token: $token"
+          if [ -z "$token" ]; then
+            echo "Super User Token not found in logs" >&2
+            exit 1
+          else
+            echo "SUPER_USER_TOKEN=${token}" >> $GITHUB_ENV
+          fi
+
       - name: Set up superUserToken config property
-        run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
+        run: echo "superUserToken=${{ env.SUPER_USER_TOKEN }}" >> src/main/resources/config.properties
 
       - name: Run TeamCity agent
         run: |
