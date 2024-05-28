@@ -7,7 +7,7 @@ import com.example.teamcity.ui.Selectors;
 import static com.codeborne.selenide.Selenide.element;
 
 public class AgentPage extends Page {
-    private SelenideElement authButton = element(Selectors.byClass("ring-button-button"));
+    private SelenideElement authButton = element(new ByAttribute("data-test-authorize-agent", "true"));
 
     public AgentPage open() {
         Selenide.open("/agents/unauthorized");
