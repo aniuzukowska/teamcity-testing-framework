@@ -9,6 +9,7 @@ import static com.codeborne.selenide.Selenide.element;
 
 public class AgentPage extends Page {
     private SelenideElement authButton = element(new ByAttribute("data-test-authorize-agent", "true"));
+    private SelenideElement popup = element(Selectors.byDataTest("ring-popup"));
 
     public AgentPage open() {
         Selenide.open("/agents/unauthorized");
@@ -19,6 +20,7 @@ public class AgentPage extends Page {
     public AgentPage setupTeamCityAgent() {
         authButton.click();
         waitUntilPageIsLoaded();
+        popup.shouldBe(Condition.visible, Duration.ofSeconds(30));
         submit();
         return this;
     }
