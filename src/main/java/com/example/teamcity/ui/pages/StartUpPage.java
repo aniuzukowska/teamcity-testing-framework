@@ -14,7 +14,7 @@ public class StartUpPage extends Page {
     private SelenideElement acceptLicense = element(Selectors.byId("accept"));
 
     public StartUpPage open() {
-        Selenide.open("/");
+        Selenide.open("/mnt");
         return this;
     }
 
