@@ -36,11 +36,12 @@ jobs:
         # Флаг -d запускает контейнер в фоновом режиме (так как, например, контейнер с сервером не имеет окончания, он просто всегда включен,
         # и если мы без этого флага в него перейдем, то никогда не сможем перешагнуть к следующему степу
         run: |
-          docker run -d --name selenoid \
-          -v /var/run/docker.sock:/var/run/docker.sock \
-          -v $(pwd)/config/:/etc/selenoid/:ro \
-          -p 4444:4444 \
-          aerokube/selenoid
+          docker run -d \
+            --name selenoid \
+            -p 4444:4444 \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v $(pwd)/infra/:/etc/selenoid/:ro \
+            aerokube/selenoid
 
       # В этом степе нет смысла, так как через GitHub Actions нет доступа к Selenoid UI. Но зато это полезно при локальном запуске через act, для отладки
       - name: Run Selenoid UI
@@ -61,7 +62,7 @@ jobs:
           -v $(pwd)/tmp/teamcity_server/datadir:/data/teamcity_server/datadir \
           -v $(pwd)/tmp/teamcity_server/logs:/opt/teamcity/logs \
           -p 8111:8111 \
-          jetbrains/teamcity-server:2023.11.1
+          jetbrains/teamcity-server:latest
 
       - name: Set up TeamCity server
         # Настройка сервера при первом запуске (принятие лицензии, выбор базы данных и т.д.), реализованная в виде теста
@@ -81,7 +82,7 @@ jobs:
         run: |
           docker run -e SERVER_URL=http://$HOST:8111 -u 0 -d --name teamcity-agent \
           -v $(pwd)/tmp/teamcity_agent/conf:/data/teamcity_agent/conf \
-          jetbrains/teamcity-agent:2023.11.1
+          jetbrains/teamcity-agent:latest
 
       - name: Set up TeamCity agent
         # Авторизация агента при первом запуске, реализованная в виде теста
