@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.selector.ByAttribute;
 import com.example.teamcity.ui.Selectors;
 import com.codeborne.selenide.Condition;
+import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.element;
 
