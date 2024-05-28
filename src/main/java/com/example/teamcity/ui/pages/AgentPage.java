@@ -4,6 +4,7 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.selector.ByAttribute;
 import com.example.teamcity.ui.Selectors;
+import com.codeborne.selenide.Condition;
 
 import static com.codeborne.selenide.Selenide.element;
 
