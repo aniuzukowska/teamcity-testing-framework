@@ -2,6 +2,7 @@ package com.example.teamcity.ui.pages;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.selector.ByAttribute;
 import com.example.teamcity.ui.Selectors;
 
 import static com.codeborne.selenide.Selenide.element;
