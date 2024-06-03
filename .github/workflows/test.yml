@@ -92,6 +92,7 @@ jobs:
       - name: Run test setAuthSettings
         run: ./mvnw clean test -Dtest=BaseTest#setAuthSettings
 
+
       - name: Run api tests
         run: ./mvnw test -Dxml-suite=testng-suites/api-suite.xml
 
