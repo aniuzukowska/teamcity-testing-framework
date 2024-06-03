@@ -8,6 +8,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ public class BaseTest {
     public CheckedRequests checkedWithSuperUser = new CheckedRequests(Specifications.getSpec().superUserSpec());
     public UncheckedRequests uncheckedWithSuperUser = new UncheckedRequests(Specifications.getSpec().superUserSpec());
 
-    @BeforeSuite
+    @Test
     public static void setAuthSettings() throws IOException {
         String body = """
                 {"perProjectPermissions": true,
