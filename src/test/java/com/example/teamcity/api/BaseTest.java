@@ -4,10 +4,10 @@ import com.example.teamcity.api.generators.TestDataStorage;
 import com.example.teamcity.api.requests.CheckedRequests;
 import com.example.teamcity.api.requests.UncheckedRequests;
 import com.example.teamcity.api.spec.Specifications;
+import com.github.viclovsky.swagger.coverage.SwaggerCoverageRestAssured;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -67,6 +67,7 @@ public class BaseTest {
                 }""";
 
         given()
+                .filter(new SwaggerCoverageRestAssured())
                 .spec(Specifications.getSpec().superUserSpec())
                 .body(body)
                 .put("/app/rest/server/authSettings");
